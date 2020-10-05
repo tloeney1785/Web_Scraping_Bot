@@ -44,7 +44,7 @@ urls = [item.get("href") for item in soup.find_all("a")]
 
     
 #Remove duplicates and none values
-urls_final = list(dict.fromkeys(url_collected))
+urls_final = list(dict.fromkeys(urls))
 urls_final = list(filter(None, urls_final)) 
 
 #Remove if not starting with pwa, remove if ending with display=reviews
