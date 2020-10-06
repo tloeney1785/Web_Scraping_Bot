@@ -45,7 +45,7 @@ print(final_list)
 
 data=[]
 
-for i in range(0,2):
+for i in range(0,len(final_list)):
     url = final_list[i]
     driver2 = webdriver.Chrome()
     driver2.get(url)  
