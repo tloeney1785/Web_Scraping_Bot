@@ -14,7 +14,9 @@ page=input("Enter the webpage:\n")
 # no = 1
 # def test(n):
 #     global no
-#     pages= page + "?page=" + str(n) 
+#https://www.leafly.com/finder/doctors/miami-fl?lat=25.7747146&lng=-80.2189312&zoom=10&view=map&page=4
+#Works with these type of links, have to adjust map and click "search this area first" then add &view=map&page= to the end
+#     pages= page + "&view=map&page=" + str(n) 
 #     driver = webdriver.Chrome()
 #     driver.get(pages)  
 #     sleep(randint(2,10))
