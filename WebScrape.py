@@ -4,6 +4,7 @@ import numpy as np
 from time import sleep
 from random import randint
 from selenium import webdriver
+import csv
 
 # no = 1
 
@@ -43,27 +44,27 @@ string = 'https://www.leafly.com'
 final_list=[string + s for s in url_final]
 print(final_list)
 
-data=[]
-
 for i in range(0,len(final_list)):
     url = final_list[i]
     driver2 = webdriver.Chrome()
     driver2.get(url)  
-    sleep(randint(10,20))
+    # sleep(randint(10,20))
     soup = BeautifulSoup(driver2.page_source, 'html.parser')
     my_table2 = soup.find_all(class_='heading--l font-headers font-bold')
-        
+    
+    temp = []
+
     for n in soup.find_all('h1'):
-        data.append(n.text)
+        temp.append(n.text)
 
     tels = [item.get("href") for item in soup.find_all("a")]
     #Remove duplicates and none values
     tels_final = list(dict.fromkeys(tels))
     tels_final = list(filter(None, tels_final)) 
 
-    #Remove if not starting with /doctors/
+    #filter for tel
     tels_final = [x for x in tels_final if x.startswith('tel:')]
-    for t in tels_final: 
-        data.append(t)
         
-print (data)
+    with open('info.csv', mode='a') as info:
+            employee_writer = csv.writer(info, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            employee_writer.writerow([temp, tels_final])
