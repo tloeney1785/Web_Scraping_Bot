@@ -26,7 +26,8 @@ import csv
 #First loop: getting the URLs 
 ##############################
 
-page="https://www.leafly.com/finder/doctors/salem-or" 
+
+page=input("Enter the webpage:\n") 
 driver = webdriver.Chrome()
 driver.get(page)  
 sleep(randint(5,15))
