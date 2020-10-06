@@ -6,6 +6,8 @@ from random import randint
 from selenium import webdriver
 import csv
 
+############################################################################################
+#LOOP THROUGH PAGES
 # no = 1
 
 # def test(n):
@@ -22,10 +24,7 @@ import csv
 
 # test(no)
 
-##############################
-#First loop: getting the URLs 
-##############################
-
+#GETTING DOCTOR INFO
 
 page=input("Enter the webpage:\n") 
 driver = webdriver.Chrome()
