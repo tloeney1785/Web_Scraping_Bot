@@ -26,6 +26,8 @@ page=input("Enter the webpage:\n")
 #         test(no)
 # test(no)
 
+############################################################################################
+
 #GETTING DOCTOR INFO
 
 # driver = webdriver.Chrome()
@@ -73,8 +75,9 @@ page=input("Enter the webpage:\n")
 
 #################################################################################
 #BOTH LOOP THROUGH PAGES AND GET DOCTOR DATA
-############################################################################################
-
+#################################################################################
+# https://www.leafly.com/finder/doctors/garden-grove-ca
+# https://www.leafly.com/finder/doctors/baldwin-new york
 no = 1
 def test(n):
     global no
@@ -82,7 +85,7 @@ def test(n):
     pages= page + "&view=map&page=" + str(n) 
     driver = webdriver.Chrome()
     driver.get(pages)  
-    sleep(2)#randint(2,10))
+    sleep(2)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     urls = [item.get("href") for item in soup.find_all("a")]
     
@@ -104,11 +107,30 @@ def test(n):
         # sleep(randint(10,20))
         soup1 = BeautifulSoup(driver2.page_source, 'html.parser')
         
-        temp = []
+        title = []
         tels_final = []
-        for n in soup.find_all('h1'):
-            temp.append(n.text)
+        address = []
+        email = []
 
+        #NAME SEARCH
+        for n in soup1.find_all('h1'):
+            title.append(n.text)
+
+        #ADDRESS SEARCH
+        for n in soup1.find_all("span", attrs={'data-testid':'primary-location'}):
+            address.append(n.text)
+
+        #EMAIL SEARCH
+
+        mail = [item.get("href") for item in soup1.find_all("a")]
+        #Remove duplicates and none values
+        email = list(dict.fromkeys(mail))
+        email = list(filter(None, email)) 
+
+        #filter for email
+        email = [x for x in email if x.startswith('mailto:')]
+
+        #PHONE SEARCH
         tels = [item.get("href") for item in soup1.find_all("a")]
         #Remove duplicates and none values
         tels_final = list(dict.fromkeys(tels))
@@ -116,12 +138,12 @@ def test(n):
 
         #filter for tel
         tels_final = [x for x in tels_final if x.startswith('tel:')]
-        for n in soup.findAll("div", {"class": "text-sm mb-xs flex items-center"}):
+        for n in soup1.findAll("div", {"class": "text-sm mb-xs flex items-center"}):
             tels_final.append(n.text)
             
-        with open('info.csv', mode='a') as info:
-                employee_writer = csv.writer(info, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                employee_writer.writerow([temp, tels_final])
+        with open('info.csv', mode='a', newline='') as info:
+                employee_writer = csv.writer(info)#, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                employee_writer.writerow([title, tels_final,address,email])
     if soup.findAll("span",text="Next"):
         no += 1
         test(no)
