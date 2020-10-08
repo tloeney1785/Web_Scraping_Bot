@@ -111,6 +111,7 @@ def test(n):
         tels_final = []
         address = []
         email = []
+        tags =[]
 
         #NAME SEARCH
         for n in soup1.find_all('h1'):
@@ -121,7 +122,6 @@ def test(n):
             address.append(n.text)
 
         #EMAIL SEARCH
-
         mail = [item.get("href") for item in soup1.find_all("a")]
         #Remove duplicates and none values
         email = list(dict.fromkeys(mail))
@@ -141,9 +141,13 @@ def test(n):
         for n in soup1.findAll("div", {"class": "text-sm mb-xs flex items-center"}):
             tels_final.append(n.text)
             
+        #TAG SEARCH
+        for n in soup1.find_all("span", attrs={'class':'tag mr-xs mb-xs'}):
+            tags.append(n.text)
+
         with open('info.csv', mode='a', newline='') as info:
-                employee_writer = csv.writer(info)#, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                employee_writer.writerow([title, tels_final,address,email])
+                employee_writer = csv.writer(info, delimiter=',')#, quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                employee_writer.writerow([title, tels_final,address,email,tags])
     if soup.findAll("span",text="Next"):
         no += 1
         test(no)
